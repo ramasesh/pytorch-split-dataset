@@ -12,7 +12,7 @@ from absl import app
 FLAGS = flags.FLAGS
 
 from torchvision import datasets
-import yaml
+import json
 import os
 
 supported_datasets = {'MNIST': datasets.MNIST,
@@ -47,13 +47,13 @@ def main(argv):
 
     if os.path.exists(FLAGS.record_file):
         with open(FLAGS.record_file, 'r') as f:
-            current_data = yaml.safe_load(f)
+            current_data = json.load(f)
         current_data.update(all_label_locs)
     else:
         current_data = all_label_locs
 
     with open(FLAGS.record_file, 'w') as f:
-        yaml.safe_dump(current_data, f)
+        json.dump(current_data, f)
 
 if __name__=='__main__':
     app.run(main)
