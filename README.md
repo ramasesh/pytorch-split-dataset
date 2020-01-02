@@ -28,7 +28,7 @@ with open('dataset_indices.json', 'r') as f:
 label_locations = data[DATASET_NAME][TRAIN or TEST]
 ```
 
-(JSON rather than YAML b/c loading YAML turns out to be way slower in python; the annoyance of JSON is that dictionary keys are all strings)
+(JSON rather than YAML b/c loading YAML turns out to be [way slower](https://stackoverflow.com/questions/27743711/can-i-speedup-yaml) in python; the annoyance of JSON is that dictionary keys are all strings)
 
 The split dataset object has all the items in it, so the split can be changed without creating a new object:
 ```
