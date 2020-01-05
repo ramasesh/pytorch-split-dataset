@@ -1,5 +1,6 @@
-# Split datasets in PyTorch
+# Split and donsampled datasets in PyTorch
 
+## Split datasets 
 A commonly-studied continual learning scenario is using split datasets, which are subsets of a particular dataset which contain only a subset of labels.  For example, we can take splits of MNIST, say all 0s and 6s, or all 3s, 4s, and 7s, etc.  
 
 Usage (for MNIST example):
@@ -35,3 +36,21 @@ The split dataset object has all the items in it, so the split can be changed wi
 split_MNIST.update_split([3,8])
 ```
 
+## Downsampled datasets
+
+If you want to downsample a dataset, selecting a particular number of images from each class, you can do so as follows (using `label_locations` as with split datasets above):
+
+```
+import torchvision.datasets
+from split_datasets import DownsampledDataset
+
+MNIST = torchvision.datasets.MNIST(root='dataset', 
+                                   train=True, 
+                                   download=False, 
+                                   transform=ToTensor())
+
+MNIST_downsamples = DownsampledDataset(MNIST, 
+                                       num_pts_per_class=5, 
+                                       label_locations,
+                                       random_seed=10)
+```
