@@ -132,7 +132,9 @@ class DownsampledDataset():
         np.random.seed(random_seed)
         self.selected_indices = []
         for key in self.label_locations.keys():
-            self.selected_indices.append(np.random.choice(self.label_locations[key], size=num_pts_per_class))
+            self.selected_indices.append(np.random.choice(self.label_locations[key], 
+                                                          size=num_pts_per_class,
+                                                          replace=False))
         self.selected_indices = np.array(self.selected_indices, dtype=int)   
         self.selected_indices = self.selected_indices.flatten('F') # column-major flattening
          
