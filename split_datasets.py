@@ -1,3 +1,4 @@
+import numpy as np
 from torchvision import datasets
 import json
     #json was chosen because it's faster tham YAML, but has the downside of requiring keys to be string
@@ -117,3 +118,26 @@ class SplitDataset():
         self.indices_in_split = sum(self.indices_in_split, [])
         self.indices_in_split = sorted(self.indices_in_split)
 
+class DownsampledDataset():
+    # Dataset with a subset of images from the original labeled dataset,
+    #   with an equal number of 
+    def __init__(self, full_dataset, num_pts_per_class, label_locations, random_seed=0):
+        # seed is for selectin the elements of each 
+        self.full_dataset = full_dataset
+        self.label_locations = label_locations
+      
+        self.__set_selected_indices__(random_seed, num_pts_per_class)
+
+    def __set_selected_indices__(self, random_seed, num_pts_per_class):
+        np.random.seed(random_seed)
+        self.selected_indices = []
+        for key in self.label_locations.keys():
+            self.selected_indices.append(np.random.choice(self.label_locations[key], size=num_pts_per_class))
+        self.selected_indices = np.array(self.selected_indices, dtype=int)   
+        self.selected_indices = self.selected_indices.flatten('F') # column-major flattening
+         
+    def __len__(self):
+        return len(self.selected_indices)
+    
+    def __getitem__(self, idx):
+        return self.full_dataset.__getitem__(self.selected_indices[idx])
